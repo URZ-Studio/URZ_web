@@ -1,0 +1,18 @@
+{
+  "siteName": "URZ Studio",
+  "siteLink": "/",
+  "menus": [
+    { "label": "홈", "href": "/" },
+    {
+      "label": "포트폴리오",
+      "children": [
+        { "label": "HOI4 모딩툴", "href": "/projects/hoi4-tool" },
+        { "label": "포트폴리오", "href": "/projects/portfolio" },
+        { "label": "갤러리", "href": "/projects/gallery" }
+      ]
+    },
+    { "label": "개인 유튜브", "href": "/youtube" },
+    { "label": "블로그", "href": "https://티스토리주소" },
+    { "label": "프로필", "href": "/about" }
+  ]
+}
