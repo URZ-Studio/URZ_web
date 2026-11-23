@@ -28,3 +28,5 @@ body.dark{--bg:#131b18;--paper:#1b2520;--ink:#f0f5f0;--muted:#a6b6ab;--line:#344
 #lightboxAlbums{min-height:110px;width:100%;padding:8px;border-radius:10px;background:var(--paper);border:1px solid var(--line);color:var(--ink)}
 #galleryEmpty[hidden],.owner-only[hidden],#adminLogout[hidden],#adminStatus[hidden]{display:none!important}
 @media(max-width:600px){.gallery-visitor-hint{width:100%;margin-left:0}.gallery-owner-row{gap:10px}}
+
+#adminLogin[hidden]{display:none!important}
