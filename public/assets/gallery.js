@@ -5,8 +5,23 @@ const $=id=>document.getElementById(id), apiBase='/api', notify=s=>window.urzToa
 const state={items:[],albums:[],models:[],total:0,offset:0,limit:36,search:'',album:'all',model:'all',sort:'newest',selected:null,secret:sessionStorage.getItem('urz-gallery-admin')||'',authorized:false,requestId:0,loading:false};
 const text=(node,value)=>{node.textContent=String(value??'')};
 function node(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)text(n,value);return n}
-function show(id){$(id).hidden=false;document.body.style.overflow='hidden'}
-function close(id){$(id).hidden=true;document.body.style.overflow=''}
+const modalOpeners = new WeakMap();
+let retryAppend = null;
+function show(id, opener = document.activeElement) {
+ const dialog = $(id);
+ if (dialog.open) return;
+ modalOpeners.set(dialog, opener);
+ dialog.scrollTop = 0;
+ dialog.showModal();
+}
+function close(id) {
+ const dialog = $(id), opener = modalOpeners.get(dialog);
+ if (!dialog.open) return;
+ dialog.close();
+ if (opener?.isConnected && !opener.closest('[hidden]') && opener !== document.body) opener.focus();
+ else if (id === 'adminModal' && state.authorized) $('adminLogout').focus();
+ else if (id === 'galleryLightbox') $('gallerySearch').focus();
+}
 function safeJSON(s){try{return JSON.parse(s)}catch{return null}}
 async function req(path,opts={}){
  const headers={...(opts.headers||{})};
@@ -85,54 +100,154 @@ function setAuthor(yes){state.authorized=!!yes;document.querySelectorAll('.owner
  $('adminLogin').hidden=!!yes;$('adminLogout').hidden=!yes;$('adminStatus').hidden=!yes;
  for(const id of ['editTitleWrap','editTagsWrap','editAlbumWrap','saveArtwork','deleteArtwork'])$(id).hidden=!yes;
 }
-function albumsSelect(){const select=$('uploadAlbum');const v=select.value;select.replaceChildren();const option=node('option','', '앨범 지정 안 함');option.value='';select.append(option);
- for(const a of state.albums){const op=node('option','',a.name);op.value=a.id;select.append(op)}select.value=v;
- const bar=$('albumBar');bar.replaceChildren();for(const a of [{id:'all',name:'전체 앨범'},{id:'unfiled',name:'미분류'},...state.albums]){
-  const b=node('button','album-pill'+(state.album===a.id?' active':''),a.name+(a.count!==undefined?' · '+a.count:''));b.type='button';
-  b.addEventListener('click',()=>{state.album=a.id;albumsSelect();refresh()});bar.append(b)
+function syncAlbumButtons() {
+ for (const button of $('albumBar').children) {
+  button.setAttribute('aria-pressed', String(button.dataset.album === state.album));
  }
 }
-async function loadAlbums(){const data=await req('/albums');state.albums=data.albums||[];albumsSelect()}
-function modelSelect(models){const sel=$('modelFilter'),old=sel.value;sel.replaceChildren();const o=node('option','','모든 모델');o.value='all';sel.append(o);for(const model of models){const opt=node('option','',model);opt.value=model;sel.append(opt)}sel.value=models.includes(old)?old:'all'}
+function albumsSelect() {
+ const select = $('uploadAlbum'), selected = select.value;
+ select.replaceChildren(new Option('앨범 지정 안 함', ''));
+ for (const album of state.albums) select.add(new Option(album.name, album.id));
+ if (state.albums.some(album => album.id === selected)) select.value = selected;
+
+ const bar = $('albumBar'), focused = bar.contains(document.activeElement) && document.activeElement.dataset.album;
+ bar.replaceChildren();
+ for (const album of [{id:'all', name:'전체 앨범'}, {id:'unfiled', name:'미분류'}, ...state.albums]) {
+  const button = node('button', 'album-pill', album.name + (album.count === undefined ? '' : ' · ' + album.count));
+  button.type = 'button';
+  button.dataset.album = album.id;
+  bar.append(button);
+ }
+ syncAlbumButtons();
+ if (focused) ([...bar.children].find(button => button.dataset.album === focused) || bar.firstElementChild)?.focus();
+}
+async function loadAlbums() {
+ const data = await req('/albums');
+ state.albums = data.albums || [];
+ if (state.album !== 'all' && state.album !== 'unfiled' && !state.albums.some(album => album.id === state.album)) state.album = 'all';
+ albumsSelect();
+}
+function modelSelect(models) {
+ const select = $('modelFilter');
+ const available = new Set(models);
+ if (state.model !== 'all') available.add(state.model);
+ select.replaceChildren(new Option('모든 모델', 'all'));
+ for (const model of available) select.add(new Option(model, model));
+ select.value = state.model;
+}
 function buildParams(){const p=new URLSearchParams();p.set('limit',state.limit);p.set('offset',state.offset);p.set('sort',state.sort);p.set('album',state.album);p.set('model',state.model);
  if(state.search)p.set('terms',JSON.stringify(searchTokens(state.search)));return p.toString();}
-async function refresh(append=false){if(!append){state.offset=0;state.items=[];clearGrid()}
- const rid=++state.requestId;state.loading=true;$('galleryCount').textContent='작품 불러오는 중…';$('loadMore').hidden=true;
- try{const data=await req('/gallery?'+buildParams());if(rid!==state.requestId)return;
-  state.items=append?[...state.items,...data.items]:data.items;state.total=data.total;state.offset=state.items.length;
-  modelSelect(data.models||[]);render();
- }catch(e){if(rid!==state.requestId)return;console.error(e);$('galleryCount').textContent='전시 데이터 연결 실패';
-  $('galleryBannerDescription').textContent=e.message;$('galleryEmpty').hidden=false;text($('emptyTitle'),'작품 목록을 불러오지 못했어요.');text($('emptyMessage'),e.message);
- }finally{if(rid===state.requestId)state.loading=false}
+async function refresh(append = false) {
+ if (!append) state.offset = 0;
+ const rid = ++state.requestId;
+ const count = $('galleryCount'), grid = $('galleryGrid'), more = $('loadMore');
+ state.loading = true;
+ retryAppend = null;
+ grid.setAttribute('aria-busy', 'true');
+ text(count, '작품 불러오는 중…');
+ more.setAttribute('aria-disabled', 'true');
+ try {
+  const data = await req('/gallery?' + buildParams());
+  if (rid !== state.requestId) return;
+  state.items = append ? [...state.items, ...data.items] : data.items;
+  state.total = data.total;
+  state.offset = data.offset + data.items.length;
+  modelSelect(data.models || []);
+  render(append ? data.items : state.items, append);
+ } catch (error) {
+  if (rid !== state.requestId) return;
+  retryAppend = append;
+  text(count, '전시 데이터 연결 실패');
+  text($('resetGalleryFilters'), '다시 시도');
+  if (!append) {
+   state.items = [];
+   grid.replaceChildren();
+  }
+  $('galleryEmpty').hidden = false;
+  text($('emptyTitle'), '작품 목록을 불러오지 못했어요.');
+  text($('emptyMessage'), error.message);
+ } finally {
+  if (rid === state.requestId) {
+   state.loading = false;
+   more.removeAttribute('aria-disabled');
+   grid.removeAttribute('aria-busy');
+  }
+ }
 }
-function clearGrid(){$('galleryGrid').replaceChildren()}
-function render(){const grid=$('galleryGrid');grid.replaceChildren();const frag=document.createDocumentFragment();
- for(const item of state.items){
-  const card=node('article','pin');const btn=node('button');btn.type='button';btn.className='gallery-open';btn.style.cssText='display:block;border:0;background:none;width:100%;padding:0;text-align:left;cursor:pointer;color:inherit';btn.setAttribute('aria-label',item.title+' 보기');
-  const img=node('img','pin-image');img.src=item.src;img.loading='lazy';img.decoding='async';img.alt=item.title;btn.append(img);btn.addEventListener('click',()=>openLightbox(item.id));card.append(btn);
-  const caption=node('div','pin-meta');caption.append(node('h3','',item.title),node('p','',item.model||'AI Artwork'));card.append(caption);
-  const flags=node('div','pin-flags');flags.append(node('small','','URZ STUDIO'));for(const aid of (item.albumIds||[]).slice(0,2)){const a=state.albums.find(x=>x.id===aid);if(a)flags.append(node('small','',a.name))}if(item.seed)flags.append(node('small','','Seed '+item.seed));card.append(flags);frag.append(card)
- }grid.append(frag);
- const empty=state.items.length===0;$('galleryEmpty').hidden=!empty;$('loadMore').hidden=state.items.length>=state.total||!state.items.length;
- text($('galleryCount'),state.total+' 작품');
- if(empty){text($('emptyTitle'),state.search?'검색된 작품이 없어요.':'아직 공개된 작품이 없어요.');text($('emptyMessage'),state.search?'검색어를 바꾸거나 앨범을 선택해 보세요.':'작가가 작품을 업로드하면 모든 방문자에게 보여요.')}
+function render(items = state.items, append = false) {
+ const grid = $('galleryGrid'), fragment = document.createDocumentFragment();
+ const focused = grid.contains(document.activeElement) && document.activeElement.dataset.artwork;
+ const hadMoreFocus = document.activeElement === $('loadMore');
+ let firstAdded;
+ for (const [index, item] of items.entries()) {
+  const card = node('article', 'pin');
+  const button = node('button', 'gallery-open');
+  button.type = 'button';
+  button.dataset.artwork = item.id;
+  button.setAttribute('aria-label', item.title + ' 보기');
+  button.setAttribute('aria-haspopup', 'dialog');
+  const img = node('img', 'pin-image');
+  img.src = item.src;
+  img.alt = '';
+  img.loading = !append && index === 0 ? 'eager' : 'lazy';
+  img.decoding = 'async';
+  if (Number(item.width) > 0 && Number(item.height) > 0) {
+   img.width = item.width;
+   img.height = item.height;
+  }
+  button.append(img);
+  button.addEventListener('click', () => openLightbox(item, button));
+  firstAdded ||= button;
+  card.append(button, node('h2', '', item.title));
+  if (item.model) card.append(node('p', '', item.model));
+  fragment.append(card);
+ }
+ if (append) grid.append(fragment);
+ else grid.replaceChildren(fragment);
+
+ const empty = state.items.length === 0;
+ $('galleryEmpty').hidden = !empty;
+ $('loadMore').hidden = state.offset >= state.total || empty;
+ text($('galleryCount'), state.total + '개 작품');
+ if (empty) {
+  const filtered = state.search || state.album !== 'all' || state.model !== 'all';
+  text($('resetGalleryFilters'), '전체 작품 보기');
+  text($('emptyTitle'), filtered ? '조건에 맞는 작품이 없어요.' : '아직 공개된 작품이 없어요.');
+  text($('emptyMessage'), filtered ? '검색어나 필터를 바꿔 보세요.' : '게시된 작품은 여기에 표시됩니다.');
+ }
+ if (!append && focused) {
+  ([...grid.querySelectorAll('.gallery-open')].find(button => button.dataset.artwork === focused) || $('gallerySearch')).focus();
+ } else if (append && hadMoreFocus) {
+  (firstAdded || $('gallerySearch')).focus();
+ }
 }
 function kv(label,value){const d=node('div','kv');d.append(node('span','',label),node('span','',value??'—'));return d}
-function openLightbox(id){const item=state.items.find(x=>x.id===id);if(!item)return;state.selected=item;
+function openLightbox(item, opener){state.selected=item;
  $('lightboxMedia').replaceChildren();const img=node('img');img.src=item.src;img.alt=item.title;$('lightboxMedia').append(img);
- text($('lightboxTitle'),item.title);text($('lightboxType'),'URZ STUDIO ARTWORK');
+ text($('lightboxTitle'),item.title);
+ $('lightboxDetails').parentElement.open = false;
  const details=$('lightboxDetails');details.replaceChildren(kv('모델',item.model),kv('Seed',item.seed),kv('Sampler',item.sampler),kv('Steps',item.steps),kv('CFG',item.cfg),kv('LoRA',item.loras),kv('크기',item.width&&item.height?item.width+' × '+item.height+' px':''),kv('프롬프트',item.prompt),kv('Negative',item.negative),kv('태그',item.tags?.join(', ')));
  if(state.authorized){$('lightboxEditTitle').value=item.title;$('lightboxTags').value=(item.tags||[]).join(', ');
   const sel=$('lightboxAlbums');sel.replaceChildren();for(const a of state.albums){const opt=node('option','',a.name);opt.value=a.id;opt.selected=item.albumIds?.includes(a.id)||false;sel.append(opt)}
  }
- history.replaceState({},'',location.pathname+'?art='+encodeURIComponent(id));show('galleryLightbox')
+ const url = new URL(location.href);
+ url.searchParams.set('art', item.id);
+ history.replaceState(history.state, '', url);
+ show('galleryLightbox', opener)
 }
-function closeArt(){close('galleryLightbox');history.replaceState({},'',location.pathname)}
+function closeArt() {
+ close('galleryLightbox');
+ const url = new URL(location.href);
+ url.searchParams.delete('art');
+ history.replaceState(history.state, '', url);
+ state.selected = null;
+}
 async function adminLogin(e){e.preventDefault();const pass=$('adminPassword').value.trim();$('adminMessage').textContent='관리 권한을 확인하는 중…';
  try{state.secret=pass;await req('/admin/check',{auth:true});state.authorized=true;sessionStorage.setItem('urz-gallery-admin',pass);setAuthor(true);$('adminPassword').value='';close('adminModal');notify('작가 모드로 로그인했습니다. 이제 공개 작품을 게시할 수 있어요.');
  }catch(err){state.secret='';$('adminMessage').textContent=err.message;notify('인증 실패: '+err.message)}
 }
-function adminLogout(){state.secret='';state.authorized=false;sessionStorage.removeItem('urz-gallery-admin');setAuthor(false);notify('작가 관리 모드를 종료했습니다.')}
+function adminLogout(){state.secret='';state.authorized=false;sessionStorage.removeItem('urz-gallery-admin');setAuthor(false);$('adminLogin').focus();notify('작가 관리 모드를 종료했습니다.')}
 async function upload(files){if(!state.authorized){show('adminModal');return}
  const valid=[...files].filter(f=>/^image\/(png|jpeg|webp|avif|gif)$/i.test(f.type));if(!valid.length){notify('PNG/JPEG/WebP/AVIF/GIF 파일을 선택해 주세요.');return}
  let ok=0,failed=0,duplicate=0;const prog=$('uploadProgress');
@@ -160,7 +275,7 @@ async function deleteDetail(){if(!state.authorized||!state.selected)return;if(!c
  catch(e){notify('삭제 실패: '+e.message)}
 }
 function albumManager(){const list=$('albumManagerList');list.replaceChildren();if(!state.albums.length){list.append(node('p','muted small','앨범이 없어요. 아래에서 첫 앨범을 만들어 보세요.'));return}
- for(const a of state.albums){const row=node('div','contact-card'),label=node('div');label.append(node('strong','',a.name),node('small','muted',(a.count||0)+'개 작품'));const btn=node('button','btn secondary small','삭제');btn.type='button';btn.addEventListener('click',async()=>{
+ for(const a of state.albums){const row=node('div','album-manager-row'),label=node('div');label.append(node('strong','',a.name),node('small','muted',(a.count||0)+'개 작품'));const btn=node('button','btn secondary small','삭제');btn.type='button';btn.addEventListener('click',async()=>{
  if(!confirm(`앨범 ‘${a.name}’을 삭제할까요? 작품은 유지됩니다.`))return;
  try{await req('/albums/'+a.id,{method:'DELETE'});await loadAlbums();await refresh();albumManager();notify('앨범을 삭제했습니다.')}
  catch(e){notify(e.message)}
@@ -173,8 +288,19 @@ async function createAlbum(){const name=$('albumName').value.trim();if(!name)ret
 function on(id,event,fn){$(id).addEventListener(event,fn)}
 let searchTimer;on('gallerySearch','input',e=>{state.search=e.target.value;clearTimeout(searchTimer);searchTimer=setTimeout(()=>refresh(),260)});
 on('modelFilter','change',e=>{state.model=e.target.value;refresh()});on('sortFilter','change',e=>{state.sort=e.target.value;refresh()});
-on('allArtworks','click',()=>{state.search='';state.album='all';state.model='all';$('gallerySearch').value='';$('modelFilter').value='all';albumsSelect();refresh()});
-on('resetGalleryFilters','click',()=>$('allArtworks').click());
+on('allArtworks','click',()=>{clearTimeout(searchTimer);state.search='';state.album='all';state.model='all';$('gallerySearch').value='';$('modelFilter').value='all';syncAlbumButtons();refresh()});
+on('resetGalleryFilters','click', () => {
+ $('allArtworks').focus();
+ if (retryAppend !== null) refresh(retryAppend);
+ else $('allArtworks').click();
+});
+on('albumBar', 'click', event => {
+ const button = event.target.closest('[data-album]');
+ if (!button || state.album === button.dataset.album) return;
+ state.album = button.dataset.album;
+ syncAlbumButtons();
+ refresh();
+});
 on('loadMore','click',()=>{if(!state.loading)refresh(true)});
 on('adminLogin','click',()=>show('adminModal'));on('adminLogout','click',adminLogout);on('adminForm','submit',adminLogin);
 on('openUpload','click',()=>{albumsSelect();show('uploadModal')});on('browseFiles','click',()=>$('uploadInput').click());
@@ -182,18 +308,44 @@ on('uploadInput','change',e=>{upload(e.target.files);e.target.value=''});
 on('manageAlbums','click',()=>{albumManager();show('albumModal')});on('createAlbum','click',createAlbum);
 on('closeLightbox','click',closeArt);on('shareArtwork','click',async()=>{const url=location.origin+location.pathname+'?art='+encodeURIComponent(state.selected.id);try{await navigator.clipboard.writeText(url);notify('작품 주소를 복사했어요.')}catch{prompt('작품 주소 복사',url)}});
 on('saveArtwork','click',saveDetail);on('deleteArtwork','click',deleteDetail);
-for(const [id,fn] of [['adminModal',()=>close('adminModal')],['uploadModal',()=>close('uploadModal')],['albumModal',()=>close('albumModal')],['galleryLightbox',closeArt]]){
- $(id).addEventListener('click',e=>{if(e.target===$(id))fn()})}
-for(const css of ['[data-close-admin]','[data-close-upload]','[data-close-album]'])document.querySelectorAll(css).forEach(x=>x.addEventListener('click',()=>close(x.closest('.overlay').id)));
-document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const id of ['adminModal','uploadModal','albumModal','galleryLightbox'])if(!$(id).hidden){if(id==='galleryLightbox')closeArt();else close(id)}});
+for (const [id, dismiss] of [
+ ['adminModal', () => close('adminModal')],
+ ['uploadModal', () => close('uploadModal')],
+ ['albumModal', () => close('albumModal')],
+ ['galleryLightbox', closeArt]
+]) {
+ const dialog = $(id);
+ window.urzBackdrop(dialog, dismiss);
+ dialog.addEventListener('cancel', event => { event.preventDefault(); dismiss(); });
+}
+for (const selector of ['[data-close-admin]', '[data-close-upload]', '[data-close-album]']) {
+ const button = document.querySelector(selector);
+ button.addEventListener('click', () => close(button.closest('dialog').id));
+}
 const drop=$('uploadDrop');drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag')});drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
 drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');if(e.dataTransfer.files?.length)upload(e.dataTransfer.files)});
-async function init(){setAuthor(false);
- if(state.secret){try{await req('/admin/check',{auth:true});setAuthor(true)}catch{adminLogout()}}
- try{await loadAlbums();await refresh();const art=new URLSearchParams(location.search).get('art');if(art){const item=state.items.find(x=>x.id===art);if(item)openLightbox(art);else{
-  try{const data=await req('/gallery?id='+encodeURIComponent(art));if(data.item){state.items.unshift(data.item);render();openLightbox(art)}}catch{}
- }}}
- catch(e){console.error(e);$('galleryBannerDescription').textContent='갤러리 서버 연결 실패: '+e.message;$('galleryCount').textContent='연결 대기';$('galleryEmpty').hidden=false;text($('emptyTitle'),'갤러리 서버 설정이 필요해요.');text($('emptyMessage'),e.message)}
+async function init() {
+ setAuthor(false);
+ if (state.secret) {
+  try { await req('/admin/check', {auth:true}); setAuthor(true); }
+  catch { state.secret = ''; sessionStorage.removeItem('urz-gallery-admin'); }
+ }
+ try { await loadAlbums(); }
+ catch { /* The list request reports service availability separately. */ }
+ await refresh();
+ const artwork = new URLSearchParams(location.search).get('art');
+ if (!artwork) return;
+ const listedItem = state.items.find(item => item.id === artwork);
+ if (listedItem) {
+  openLightbox(listedItem);
+  return;
+ }
+ try {
+  const {item} = await req('/gallery?id=' + encodeURIComponent(artwork));
+  if (item) openLightbox(item);
+ } catch (error) {
+  if (error.status === 404) notify('해당 작품을 찾을 수 없어요.');
+ }
 }
 await init();
 })();

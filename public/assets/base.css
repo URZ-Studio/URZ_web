@@ -1,0 +1,87 @@
+/* Shared palette, typography and spacing for the six portfolio pages. */
+@font-face {
+  font-family: "URZ Sans";
+  src: url("fonts/urz-sans.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  --bg: #F7FAFC;
+  --surface: #FFFFFF;
+  --text: #172637;
+  --muted: #536678;
+  --line: #DBE5EC;
+  --control-line: #8196A8;
+  --sky: #A6E7FF;
+  --accent: #2B719B;
+  --pink: #F8BAD8;
+  --pink-text: #B65182;
+  --soft: #EBF4F9;
+  --on-action: #FFFFFF;
+  --action: #235C7D;
+  --action-hover: #17435E;
+  --gallery-matte: #112031;
+  --backdrop: rgb(11 24 38 / 71%);
+  --font: "URZ Sans", Pretendard, "Apple SD Gothic Neo", "Noto Sans CJK KR", "Malgun Gothic", sans-serif;
+  --max: 1360px;
+  --gutter: clamp(20px, 5vw, 80px);
+  --space-section: clamp(58px, 7vw, 112px);
+  --gap: clamp(20px, 3vw, 44px);
+  --radius: 12px;
+  --radius-small: 8px;
+  --motion: 160ms ease;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0F1924;
+  --surface: #192A3B;
+  --text: #F3F8FD;
+  --muted: #B6C9D8;
+  --line: #364A5E;
+  --control-line: #839CB1;
+  --sky: #A3E2FF;
+  --accent: #A3E2FF;
+  --pink: #FFBBD9;
+  --pink-text: #FFBBD9;
+  --soft: #172636;
+  --on-action: #102333;
+  --action: #A3E2FF;
+  --action-hover: #C9EFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { min-width: 0; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 1rem/1.65 var(--font); }
+body:has(dialog[open]) { overflow: hidden; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+img { display: block; max-width: 100%; height: auto; }
+figure, p, dl, dd { margin: 0; }
+h1, h2, h3 { margin: 0; line-height: 1.16; letter-spacing: -.038em; text-wrap: balance; }
+h1 { font-size: clamp(2.625rem, 6.15vw, 6.25rem); font-weight: 740; }
+h2 { font-size: clamp(1.95rem, 3.6vw, 3.65rem); font-weight: 720; }
+h3 { font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 690; }
+h1 em { color: var(--accent); font-style: normal; }
+p { overflow-wrap: anywhere; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+main:focus { outline: none; }
+::selection { background: var(--sky); color: #172637; }
+
+.wrap { width: min(var(--max), calc(100% - 2 * var(--gutter))); margin-inline: auto; }
+.section { padding-block: var(--space-section); }
+.ruled { border-top: 1px solid var(--line); }
+.lead { max-width: 35rem; color: var(--muted); font-size: clamp(1rem, 1.45vw, 1.2rem); line-height: 1.72; }
+.eyebrow { display: flex; align-items: center; gap: 9px; color: var(--accent); font-weight: 680; font-size: .78rem; letter-spacing: .085em; line-height: 1.45; text-transform: uppercase; }
+.accent-line { width: 24px; height: 2px; background: var(--pink-text); }
+.sr-only, .skip-link:not(:focus) { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link:focus { position: fixed; z-index: 20; top: 10px; left: 10px; padding: 12px; border-radius: var(--radius-small); background: var(--surface); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

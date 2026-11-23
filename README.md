@@ -28,7 +28,7 @@ Root directory `/`, framework preset `None`, build output `public`, build comman
 - Original image files and embedded generation metadata are publicly accessible to viewers and may expose private prompt information. Check files before publishing. The gallery does not automatically remove EXIF.
 - Images are stored in R2 and metadata in D1; they incur any applicable Cloudflare charges according to your plan, and should be backed up separately. A Git revert does not restore deleted R2 objects.
 - If the Cloudflare bindings are not set, the gallery intentionally displays a configuration error instead of silently saving images only in the current browser.
-- The rest of the site and Contact form are presentation/mockup pages; the form does not send messages. ANIMA Bridge is an independent showcase page; no extension source, keys, private generated images or model files are published by this repo.
+- Contact links to the public GitHub profile and portfolio issue tracker. ANIMA Bridge has an independent case study with actual interface screenshots and an explanatory mockup. The screenshots use sample images and a fresh extension profile.
 
 ### API
 

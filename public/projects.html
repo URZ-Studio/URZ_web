@@ -1,3 +1,201 @@
-<!doctype html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="BEARSTORY, ANIMA VideoAPI, Scene Bridge 등 독립 웹디자인 및 브라우저 도구 프로젝트."><meta name="theme-color" content="#f5fbff"><title>PROJECTS | URZ STUDIO</title><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/showcase.css"><link rel="stylesheet" href="assets/polar.css"><style>@view-transition{navigation:auto}</style></head><body><div id="cursorGlow" aria-hidden="true"></div><div id="scrollProgress" aria-hidden="true"></div><header class="site-header"><div class="wrap header-inner"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/favicon.svg" width="41" height="41" alt=""></span><span class="brand-name">URZ STUDIO<small>POLAR CREATIVE STUDIO</small></span></a><nav id="siteNav" class="site-nav" aria-label="주 메뉴"><a href="index.html" >HOME</a><a href="projects.html" aria-current="page">PROJECTS</a><a href="anima-bridge.html" >ANIMA BRIDGE</a><a href="gallery.html" >GALLERY</a><a href="about.html" >ABOUT</a><a href="contact.html" >CONTACT</a></nav><div class="header-actions"><button id="themeToggle" class="theme-toggle" aria-label="테마 변경">☾</button><button id="menuToggle" class="menu-toggle" aria-label="메뉴 열기" aria-controls="siteNav" aria-expanded="false">☰</button></div></div><div class="wrap utility-strip"><span class="online"><i></i> PORTFOLIO · 2026</span><span>WEB DESIGN · DIGITAL PRODUCTS</span></div></header><main><section class="page-intro grid-paper"><div class="wrap"><p class="section-label">PORTFOLIO / 01 — SELECTED WORKS</p><h1 class="reveal">만들어 본 것들.<br><em>그리고 이유.</em></h1><div class="intro-bottom"><p>작업 과정에서 발견한 불편을 직접 해결해 왔습니다. <strong>BEARSTORY</strong>, 영상 생성 도구, 브라우저 확장처럼 직접 쓸 수 있는 제품을 설계하고 구현했습니다.</p><span class="chapter">2026 / 06 PROJECTS<br>ANIMA BRIDGE → INDEPENDENT</span></div></div></section>
-<section class="section" style="padding-top:35px"><div class="wrap"><div class="filter-row" aria-label="프로젝트 유형 필터"><button type="button" data-filter="all" aria-pressed="true">ALL WORKS / 06</button><button type="button" data-filter="web" aria-pressed="false">WEB APP</button><button type="button" data-filter="extension" aria-pressed="false">EXTENSIONS</button><button type="button" data-filter="ai" aria-pressed="false">AI TOOLS</button><button type="button" data-filter="personal" aria-pressed="false">PERSONAL</button></div><div id="projectsGrid" class="work-grid"></div><p class="micro" style="margin-top:22px">※ 카드의 화면은 각 제품 구조를 설명하는 UI 콘셉트입니다. 실제 제품 스크린샷은 추후 별도로 전시할 수 있습니다.</p></div></section>
-<section class="section section-dark"><div class="wrap"><div class="section-head reveal"><div><p class="section-label">SEPARATE CASE STUDY / 07</p><h2>ANIMA<br>BRIDGE<span class="alt">.</span></h2></div><div><p class="aside">AI 작업실을 제품 수준으로 설계한 독립 프로젝트. 기능을 모으는 데서 그치지 않고, 사용자 흐름을 하나로 묶었습니다.</p><a class="btn highlight" href="anima-bridge.html" style="margin-top:24px">ANIMA Bridge 보기 ↗</a></div></div></div></section></main><div id="projectDetail" class="detail-overlay" hidden role="dialog" aria-modal="true" aria-label="프로젝트 상세"><div class="detail-card"><button class="close" data-close-detail aria-label="닫기">×</button><p class="eyebrow alt" data-detail-kind></p><h2 data-detail-title></h2><p data-detail-summary></p><h3>주요 작업</h3><ul data-detail-features></ul><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:30px"><a class="btn highlight" data-detail-link href="#" target="_blank" rel="noopener noreferrer" hidden>웹사이트 ↗</a><button class="btn ghost" data-close-detail>닫기</button></div></div></div><footer class="site-footer"><div class="wrap"><div class="footer-grid"><div><p class="eyebrow" style="color:var(--lime)">CONTACT / URZ STUDIO</p><h2 class="footer-title">URZ.<br>STUDIO<span style="color:var(--orange)">.</span></h2><p class="footer-lead">웹디자인 실무에서 시작한 화면과 개인 제작 도구를 모았습니다. 사용하며 조금씩 더 다듬고 있습니다.</p></div><nav class="footer-nav"><a href="index.html">HOME</a><a href="projects.html">PROJECTS</a><a href="anima-bridge.html">ANIMA BRIDGE</a><a href="gallery.html">GALLERY</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a><a href="https://github.com/URZ-Studio" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav></div><div class="footer-bottom"><span>© <span class="year">2026</span> URZ STUDIO · INDEPENDENT WEB DESIGNER</span><span>WEB DESIGN & CREATIVE TOOLS</span></div></div></footer><script src="assets/showcase.js" defer></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="URZ Studio가 만든 웹 편집기, 브라우저 확장, 영상 생성 도구 및 편집기 프로토타입.">
+  <meta name="theme-color" content="#F7FAFC">
+  <title>프로젝트 | URZ Studio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/components.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <script src="assets/theme.js"></script>
+  <script src="assets/showcase.js" defer></script>
+</head>
+<body class="page-projects">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/favicon.svg" width="37" height="37" alt="">
+        <span>URZ<span class="brand-accent">.</span> STUDIO</span>
+      </a>
+      <nav id="siteNav" class="site-nav" aria-label="주 메뉴">
+        <a href="index.html">홈</a>
+        <a href="projects.html" aria-current="page">프로젝트</a>
+        <a href="anima-bridge.html">ANIMA Bridge</a>
+        <a href="gallery.html">갤러리</a>
+        <a href="about.html">소개</a>
+        <a href="contact.html">연락</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-button theme-toggle" type="button" aria-label="다크 모드" aria-pressed="false" hidden><span class="theme-icon" aria-hidden="true"></span></button>
+        <button id="menuToggle" class="icon-button menu-toggle" type="button" aria-label="메뉴" aria-controls="siteNav" aria-expanded="false" hidden><span class="menu-icon" aria-hidden="true"></span></button>
+      </div>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="wrap page-intro">
+      <p class="eyebrow"><span class="accent-line"></span> Project archive</p>
+      <h1>프로젝트</h1>
+      <p class="lead">반복되는 작업에서 발견한 불편을 웹앱과 브라우저 도구로 풀어냈습니다. 프로젝트마다 해결하고자 한 문제와 설계한 화면을 소개합니다.</p>
+    </section>
+    <div class="wrap project-list">
+      <div class="filter-row" role="group" aria-label="프로젝트 분류" hidden>
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">전체</button>
+        <button class="chip" type="button" data-filter="web" aria-pressed="false">웹 앱</button>
+        <button class="chip" type="button" data-filter="extension" aria-pressed="false">브라우저 확장</button>
+        <button class="chip" type="button" data-filter="ai" aria-pressed="false">AI 도구</button>
+        <button class="chip" type="button" data-filter="personal" aria-pressed="false">개인 작업</button>
+      </div>
+      <p id="projectCount" class="sr-only" role="status"></p>
+      <div id="projectsGrid" class="works-grid">
+      <article class="work-card work-featured" data-category="web">
+        <figure class="project-figure"><img src="assets/media/bearstory-960.webp" srcset="assets/media/bearstory-480.webp 480w, assets/media/bearstory-960.webp 960w" sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 1080px) 85vw, 690px" width="960" height="600" alt="BEARSTORY 4컷 편집기의 컷 비율 설정과 네 컷 미리보기" loading="lazy" decoding="async"><figcaption>공개 웹앱 화면 · 예시 이미지</figcaption></figure>
+        <div class="work-copy">
+          <p class="eyebrow">웹 애플리케이션</p>
+          <h2>BEARSTORY</h2>
+          <p>이미지에 대사를 더하고, 페이지를 엮어 이야기를 완성하는 웹 편집기.</p>
+          <button class="text-link" type="button" data-project="bearstory" aria-haspopup="dialog" hidden>프로젝트 상세 <span aria-hidden="true">↗</span></button>
+          <a class="text-link" href="https://bearstory.kro.kr/">웹앱 보기 <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+      <article class="work-card" data-category="extension">
+        <figure class="project-diagram"><ol><li>편집</li><li>저장소</li><li>시청관</li></ol><figcaption>작업 흐름 요약</figcaption></figure>
+        <div class="work-copy">
+          <p class="eyebrow">브라우저 확장</p>
+          <h2>BEARSTORY EXT</h2>
+          <p>창작, 보관, 감상을 브라우저 안에서 이어가는 로컬 작업실.</p>
+          <button class="text-link" type="button" data-project="bearstory-ext" aria-haspopup="dialog" hidden>프로젝트 상세 <span aria-hidden="true">↗</span></button>
+
+        </div>
+      </article>
+      <article class="work-card" data-category="ai">
+        <figure class="project-diagram"><ol><li>견적 확인</li><li>요청 추적</li><li>결과 보관</li></ol><figcaption>작업 흐름 요약</figcaption></figure>
+        <div class="work-copy">
+          <p class="eyebrow">영상 생성 도구</p>
+          <h2>ANIMA VideoAPI</h2>
+          <p>생성 전 견적을 확인하고, 요청한 영상의 상태와 결과를 한곳에서 관리합니다.</p>
+          <button class="text-link" type="button" data-project="video" aria-haspopup="dialog" hidden>프로젝트 상세 <span aria-hidden="true">↗</span></button>
+
+        </div>
+      </article>
+      <article class="work-card" data-category="extension">
+        <figure class="project-diagram"><ol><li>대화</li><li>장면 분석</li><li>이미지</li></ol><figcaption>작업 흐름 요약</figcaption></figure>
+        <div class="work-copy">
+          <p class="eyebrow">브라우저 확장</p>
+          <h2>Scene Bridge Anima Lite</h2>
+          <p>대화에 담긴 장면을 골라 이미지 생성 요청으로 연결합니다.</p>
+          <button class="text-link" type="button" data-project="scene" aria-haspopup="dialog" hidden>프로젝트 상세 <span aria-hidden="true">↗</span></button>
+
+        </div>
+      </article>
+      <article class="work-card" data-category="extension">
+        <figure class="project-diagram"><ol><li>이미지</li><li>영상</li><li>스토리</li></ol><figcaption>작업 흐름 요약</figcaption></figure>
+        <div class="work-copy">
+          <p class="eyebrow">통합 확장</p>
+          <h2>bEAR-STORY+EXT</h2>
+          <p>이미지·영상 생성과 스토리 편집을 같은 작업실에서 오갈 수 있게 구성한 통합 빌드.</p>
+          <button class="text-link" type="button" data-project="unified" aria-haspopup="dialog" hidden>프로젝트 상세 <span aria-hidden="true">↗</span></button>
+
+        </div>
+      </article>
+      <article class="work-card" data-category="personal">
+        <figure class="project-figure"><img src="assets/media/hoi4-715.webp" srcset="assets/media/hoi4-480.webp 480w, assets/media/hoi4-715.webp 715w" sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 1080px) 85vw, 690px" width="715" height="490" alt="HOI4 Modding Studio의 국민중점 트리 공개 시연 화면" loading="lazy" decoding="async"><figcaption>국민중점 트리 · 공개 UI 시연</figcaption></figure>
+        <div class="work-copy">
+          <p class="eyebrow">웹 UI 프로토타입</p>
+          <h2>HOI4 Modding Studio</h2>
+          <p>국민중점·이벤트·결정 등 전략 게임 모딩 구조를 시각적으로 계획하는 편집기 시연.</p>
+          <button class="text-link" type="button" data-project="hoi" aria-haspopup="dialog" hidden>프로젝트 상세 <span aria-hidden="true">↗</span></button>
+          <a class="text-link" href="https://urz-studio.github.io/Hoi4-modding/">공개 프로토타입 보기 <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+      </div>
+    </div>
+    <section class="wrap section ruled section-heading">
+      <div><p class="eyebrow">Design case study</p><h2>ANIMA Bridge</h2><p>이미지 생성에서 결과 보관까지 이어지는 작업실 설계.</p></div>
+      <a class="text-link" href="anima-bridge.html">독립 케이스 스터디 보기 <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
+  <dialog id="projectDetail" class="modal" aria-labelledby="project-title">
+    <div class="dialog">
+      <button class="icon-button modal-close" type="button" data-close-detail aria-label="닫기" autofocus>×</button>
+      <div data-project-content></div>
+    </div>
+  </dialog>
+  <template id="project-bearstory">
+    <p class="eyebrow">웹 애플리케이션</p>
+    <h2 id="project-title">BEARSTORY</h2>
+    <p>CG집과 4컷 만화를 만들 때 이미지 편집과 페이지 편집을 여러 도구에서 오가는 불편을 줄이고 싶었습니다. 작업 유형마다 편집기를 분리하고 앱 홈에서 필요한 도구를 바로 찾도록 구성했습니다.</p>
+    <dl class="fact-list"><div><dt>담당 역할</dt><dd>편집 메뉴 구성 · 작업 흐름 설계 · 화면 구현</dd></div><div><dt>사용 기술</dt><dd>HTML · CSS · JavaScript · IndexedDB · Google Drive</dd></div></dl>
+    <h3>주요 기능</h3>
+    <ul><li>CG집·4컷 만화·웹툰·웹소설 편집</li><li>말풍선·텍스트·페이지 순서 배치</li><li>PDF·CBZ·ZIP 내보내기 및 브라우저·PC 폴더·Google Drive 보관</li></ul>
+    <a class="text-link" href="https://bearstory.kro.kr/">웹앱 보기 <span aria-hidden="true">↗</span></a>
+  </template>
+  <template id="project-bearstory-ext">
+    <p class="eyebrow">브라우저 확장</p>
+    <h2 id="project-title">BEARSTORY EXT</h2>
+    <p>만든 작품을 저장하고 다시 읽기 위해 여러 폴더와 뷰어를 오가는 과정을 줄였습니다. 편집 공간과 저장소, 시청관을 분리하고 PC 폴더에 보관한 작업도 탐색할 수 있도록 구성했습니다.</p>
+    <dl class="fact-list"><div><dt>담당 역할</dt><dd>편집·저장소·시청관 메뉴 설계 · 로컬 작업 흐름 구성</dd></div><div><dt>사용 기술</dt><dd>Chrome·Edge 확장 · JavaScript · IndexedDB · File System Access API</dd></div></dl>
+    <h3>주요 기능</h3>
+    <ul><li>CG집·4컷·웹툰·웹소설 편집</li><li>브라우저 및 PC 폴더에서 작업물 관리</li><li>PDF·CBZ·이미지 폴더 시청관</li></ul>
+
+  </template>
+  <template id="project-video">
+    <p class="eyebrow">영상 생성 도구</p>
+    <h2 id="project-title">ANIMA VideoAPI</h2>
+    <p>영상 생성 요청 전에 실제 비용을 확인하고, 요청 후에는 API가 반환하는 상태를 읽을 수 있도록 했습니다. 입력과 미리보기, 비용·작업 상태를 나란히 배치했습니다.</p>
+    <dl class="fact-list"><div><dt>담당 역할</dt><dd>작업실 화면 · 견적 확인 · 대기열 상태 표시 설계</dd></div><div><dt>사용 기술</dt><dd>브라우저 확장 · JavaScript · 영상 생성 API</dd></div></dl>
+    <h3>주요 기능</h3>
+    <ul><li>모델 선택 및 시작·끝 프레임 설정</li><li>실제 견적과 사용 내역 확인</li><li>요청 상태 및 결과 보관함</li></ul>
+
+  </template>
+  <template id="project-scene">
+    <p class="eyebrow">브라우저 확장</p>
+    <h2 id="project-title">Scene Bridge Anima Lite</h2>
+    <p>대화에서 본 장면을 이미지로 만들 때 프롬프트를 따로 작성하고 결과를 대화에 다시 연결하는 단계를 줄였습니다. 요청의 출발점인 메시지와 해당 결과를 함께 탐색할 수 있게 구성했습니다.</p>
+    <dl class="fact-list"><div><dt>담당 역할</dt><dd>메시지별 생성 흐름 및 결과 탐색 화면 구성</dd></div><div><dt>사용 기술</dt><dd>Chrome·Edge 확장 · Grok · SwarmUI · JavaScript</dd></div></dl>
+    <h3>주요 기능</h3>
+    <ul><li>대화 장면 분석과 프롬프트 검토</li><li>로컬 SwarmUI 이미지 생성</li><li>메시지별 결과와 채팅별 갤러리</li></ul>
+
+  </template>
+  <template id="project-unified">
+    <p class="eyebrow">통합 확장</p>
+    <h2 id="project-title">bEAR-STORY+EXT</h2>
+    <p>별도로 만든 영상 생성 도구와 BEARSTORY 로컬 편집기를 ANIMA Bridge 작업실에서 열도록 통합했습니다. 작업실 사이드바와 편집기의 내부 메뉴를 구분해 각 도구의 탐색 방식을 살렸습니다.</p>
+    <dl class="fact-list"><div><dt>담당 역할</dt><dd>통합 사이드바 · 내부 메뉴 구조 · 설치 흐름 구성</dd></div><div><dt>사용 기술</dt><dd>Chrome·Edge 확장 · Node.js · PowerShell</dd></div></dl>
+    <h3>주요 기능</h3>
+    <ul><li>ANIMA 작업실에서 영상·편집기 열기</li><li>편집·저장소·시청관 내부 탭</li><li>Windows 설치 및 업데이트 빌더</li></ul>
+
+  </template>
+  <template id="project-hoi">
+    <p class="eyebrow">웹 UI 프로토타입</p>
+    <h2 id="project-title">HOI4 Modding Studio</h2>
+    <p>텍스트 위주인 모드 설정을 화면에서 탐색하고 관계를 계획하는 편집기를 구상했습니다. 공개 화면은 UI 시연 단계이며 프로젝트 저장과 실제 게임 파일 출력은 개발 중입니다.</p>
+    <dl class="fact-list"><div><dt>담당 역할</dt><dd>데이터 구조 탐색 · 편집 UI 구성</dd></div><div><dt>사용 기술</dt><dd>HTML · CSS · JavaScript</dd></div></dl>
+    <h3>주요 기능</h3>
+    <ul><li>국민중점·이벤트·결정 탐색</li><li>브라우저 기반 편집 화면 시연</li></ul>
+    <a class="text-link" href="https://urz-studio.github.io/Hoi4-modding/">공개 프로토타입 보기 <span aria-hidden="true">↗</span></a>
+  </template>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-main">
+        <div><a class="footer-brand" href="index.html">URZ<span class="brand-accent">.</span> STUDIO</a><p>웹디자인 · 창작 도구</p></div>
+        <nav class="footer-nav" aria-label="하단 메뉴">
+        <a href="index.html">홈</a>
+        <a href="projects.html">프로젝트</a>
+        <a href="anima-bridge.html">ANIMA Bridge</a>
+        <a href="gallery.html">갤러리</a>
+        <a href="about.html">소개</a>
+        <a href="contact.html">연락</a>
+        </nav>
+      </div>
+      <div class="footer-end">
+        <small>© <span class="year">2026</span> URZ Studio</small>
+        <a href="https://github.com/URZ-Studio">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

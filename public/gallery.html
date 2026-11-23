@@ -1,13 +1,210 @@
-<!doctype html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ANIMA AI 이미지 공개 갤러리: 작품 검색과 앨범"><meta name="theme-color" content="#f5fbff"><title>GALLERY | URZ STUDIO</title><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/showcase.css"><link rel="stylesheet" href="assets/polar.css"><style>@view-transition{navigation:auto}</style></head><body><div id="cursorGlow" aria-hidden="true"></div><div id="scrollProgress" aria-hidden="true"></div><header class="site-header"><div class="wrap header-inner"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/favicon.svg" width="41" height="41" alt=""></span><span class="brand-name">URZ STUDIO<small>POLAR CREATIVE STUDIO</small></span></a><nav id="siteNav" class="site-nav" aria-label="주 메뉴"><a href="index.html">HOME</a><a href="projects.html" >PROJECTS</a><a href="anima-bridge.html" >ANIMA BRIDGE</a><a href="gallery.html" aria-current="page" >GALLERY</a><a href="about.html" >ABOUT</a><a href="contact.html" >CONTACT</a></nav><div class="header-actions"><button id="themeToggle" class="theme-toggle" aria-label="테마 변경">☾</button><button id="menuToggle" class="menu-toggle" aria-label="메뉴 열기" aria-controls="siteNav" aria-expanded="false">☰</button></div></div><div class="wrap utility-strip"><span class="online"><i></i> PORTFOLIO · 2026</span><span>WEB DESIGN · DIGITAL PRODUCTS</span></div></header><main>
-<section class="wrap gallery-shell"><p class="section-label">POLAR GALLERY / THE CREATIVE ARCHIVE</p><h1 class="reveal">작품을 모으는<br><em>아카이브.</em></h1><p class="lead">ANIMA로 직접 만든 AI 아트워크를 전시합니다. 모델·프롬프트·시드·태그를 한국어와 영어 키워드로 찾아보고, 앨범별로 감상하세요.</p><div class="gallery-owner-row"><span class="gallery-public-mark">● PUBLIC ART GALLERY</span><button id="adminLogin" class="btn ghost" type="button" style="min-height:38px;padding:8px 15px">⚙ 작가 로그인</button><button id="adminLogout" class="btn ghost" type="button" hidden>관리 종료</button><span id="adminStatus" class="gallery-admin-status" hidden>작가 관리 모드</span></div></section><div class="gallery-sticky"><div class="container">
-<div class="gallery-toolbar"><label class="search-box" aria-label="작품 검색"><span aria-hidden="true">⌕</span><input type="search" id="gallerySearch" placeholder="곰돌이 · white bear · 모델명 · 프롬프트 · seed…" autocomplete="off"></label><select class="select" id="modelFilter" aria-label="모델별 필터"><option value="all">모든 모델</option></select><select class="select" id="sortFilter" aria-label="정렬"><option value="newest">최근 등록순</option><option value="oldest">오래된순</option><option value="title">이름순</option></select><button class="btn primary small owner-only" id="openUpload" hidden>＋ 작품 게시하기</button></div>
-<div class="gallery-tools"><button class="chip active" id="allArtworks">전체 작품</button><button class="chip owner-only" id="manageAlbums" hidden>＋ 앨범 관리</button><span class="gallery-visitor-hint">이미지를 눌러 프롬프트와 작품 정보를 확인하세요.</span></div><div id="albumBar" class="album-list" aria-label="앨범별 보기"></div></div></div>
-<div class="container"><div class="gallery-banner"><div><b id="galleryBannerTitle">🎨 공개 작품 전시장</b><p id="galleryBannerDescription">작가가 게시한 작품은 모든 방문자에게 공개돼요. 업로드는 작가만 할 수 있어요.</p></div><span class="badge" id="galleryCount">작품 불러오는 중…</span></div>
-<div id="galleryGrid" class="gallery-grid" aria-live="polite"></div><div id="galleryEmpty" class="empty-state" hidden><h3 id="emptyTitle">아직 등록된 작품이 없어요.</h3><p id="emptyMessage">작가가 첫 작품을 게시하면 이곳에 나타납니다.</p><button id="resetGalleryFilters" class="btn secondary">전체 작품 보기</button></div>
-<div class="gallery-load-wrap"><button class="btn secondary" id="loadMore" hidden>더 많은 작품 보기</button></div><p class="gallery-note">전시 작품과 이미지의 저작권 및 이용 조건은 URZ Studio에 귀속됩니다. 일부 작품에는 AI 이미지 생성 정보를 표시할 수 있습니다.</p></div>
-</main>
-<div id="adminModal" class="overlay" hidden><div class="dialog" role="dialog" aria-modal="true" aria-label="작가 로그인"><div class="dialog-top"><div><p class="eyebrow">STUDIO ADMIN</p><h2>작가 관리 로그인</h2></div><button class="icon-button" data-close-admin aria-label="닫기">✕</button></div><p>URZ Studio 운영자만 작품을 게시·편집·삭제할 수 있습니다. Cloudflare에 설정한 관리 암호를 입력하세요.</p><form id="adminForm"><div class="form-field"><label for="adminPassword">관리 암호</label><input type="password" id="adminPassword" autocomplete="off" minlength="24" placeholder="Cloudflare ADMIN_UPLOAD_KEY"></div><button type="submit" class="btn primary">작가 모드 시작</button></form><p class="gallery-note" id="adminMessage">암호는 현재 브라우저 탭의 세션에만 보관합니다.</p></div></div>
-<div id="uploadModal" class="overlay" hidden><div class="dialog" role="dialog" aria-modal="true" aria-label="작품 게시"><div class="dialog-top"><div><p class="eyebrow">PUBLISH ARTWORKS</p><h2>새 작품 게시하기</h2></div><button class="icon-button" data-close-upload aria-label="닫기">✕</button></div><p>PNG / JPEG / WebP / AVIF / GIF 파일을 여러 장 선택하면 메타데이터를 자동으로 읽어 <b>공개 서버에 게시</b>해요. 한 장당 최대 25MB.</p><div class="upload-drop" id="uploadDrop"><div style="font-size:40px">⇧</div><h3>작품 파일을 여기에 놓기</h3><p>원본 이미지가 Cloudflare R2에 저장됩니다</p><input id="uploadInput" type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" multiple><button class="btn primary" id="browseFiles" type="button">파일 여러 장 선택</button></div><div class="form-field" style="margin-top:18px"><label for="uploadAlbum">선택한 앨범에 등록</label><select id="uploadAlbum" class="select" style="max-width:none;width:100%"><option value="">앨범 지정 안 함</option></select></div><p class="gallery-note" id="uploadProgress">게시가 완료되면 도메인을 방문하는 다른 사람에게도 즉시 보여요.</p></div></div>
-<div id="galleryLightbox" class="overlay" hidden><div class="dialog gallery-lightbox" role="dialog" aria-modal="true" aria-label="작품 상세"><div class="lightbox-media" id="lightboxMedia"></div><div class="lightbox-info"><div class="dialog-top"><span class="badge" id="lightboxType">URZ ARTWORK</span><button class="icon-button" id="closeLightbox" aria-label="닫기">✕</button></div><h2 id="lightboxTitle">작품 제목</h2><div id="lightboxDetails"></div><div class="form-field owner-only" id="editTitleWrap" hidden><label for="lightboxEditTitle">작품 제목</label><input id="lightboxEditTitle" maxlength="160"></div><div class="form-field owner-only" id="editTagsWrap" hidden><label for="lightboxTags">검색 태그 · 쉼표 구분</label><input id="lightboxTags" placeholder="곰돌이, 캐릭터, 일러스트"></div><div class="form-field owner-only" id="editAlbumWrap" hidden><label for="lightboxAlbums">앨범 · 복수 선택 가능</label><select id="lightboxAlbums" multiple size="4"></select></div><div class="button-row"><button id="shareArtwork" class="btn secondary small">작품 주소 복사</button><button id="saveArtwork" class="btn primary small owner-only" hidden>수정 저장</button><button id="deleteArtwork" class="btn secondary small owner-only" hidden>삭제</button></div><p class="gallery-note">공개 작품 정보는 생성 메타데이터에서 추출한 내용입니다.</p></div></div></div>
-<div id="albumModal" class="overlay" hidden><div class="dialog" role="dialog" aria-modal="true" aria-label="앨범 관리"><div class="dialog-top"><div><p class="eyebrow">ART COLLECTIONS</p><h2>공개 앨범 관리</h2></div><button class="icon-button" data-close-album aria-label="닫기">✕</button></div><p>작품을 테마별로 정리하세요. 하나의 이미지를 여러 앨범에 넣을 수 있어요.</p><div class="form-field"><label for="albumName">새 앨범 이름</label><input id="albumName" maxlength="70" placeholder="예: 곰돌이 · 판타지 · 인물"></div><button id="createAlbum" class="btn primary small">앨범 만들기</button><div id="albumManagerList" style="margin-top:24px"></div></div></div>
-<footer class="site-footer"><div class="wrap"><div class="footer-grid"><div><p class="eyebrow" style="color:var(--lime)">CONTACT / URZ STUDIO</p><h2 class="footer-title">URZ.<br>STUDIO<span style="color:var(--orange)">.</span></h2><p class="footer-lead">웹디자인 실무에서 시작한 화면과 개인 제작 도구를 모았습니다. 사용하며 조금씩 더 다듬고 있습니다.</p></div><nav class="footer-nav"><a href="index.html">HOME</a><a href="projects.html">PROJECTS</a><a href="anima-bridge.html">ANIMA BRIDGE</a><a href="gallery.html">GALLERY</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a><a href="https://github.com/URZ-Studio" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav></div><div class="footer-bottom"><span>© <span class="year">2026</span> URZ STUDIO · INDEPENDENT WEB DESIGNER</span><span>WEB DESIGN & CREATIVE TOOLS</span></div></div></footer><script src="assets/showcase.js" defer></script><script src="assets/gallery.js" defer></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="URZ Studio의 공개 AI 작품 전시. 앨범, 모델, 시드, 프롬프트 검색을 지원합니다.">
+  <meta name="theme-color" content="#F7FAFC">
+  <title>갤러리 | URZ Studio</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/components.css">
+  <link rel="stylesheet" href="assets/pages.css">
+  <link rel="stylesheet" href="assets/gallery.css">
+  <script src="assets/theme.js"></script>
+  <script src="assets/showcase.js" defer></script>
+  <script src="assets/gallery.js" defer></script>
+</head>
+<body class="page-gallery">
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/favicon.svg" width="37" height="37" alt="">
+        <span>URZ<span class="brand-accent">.</span> STUDIO</span>
+      </a>
+      <nav id="siteNav" class="site-nav" aria-label="주 메뉴">
+        <a href="index.html">홈</a>
+        <a href="projects.html">프로젝트</a>
+        <a href="anima-bridge.html">ANIMA Bridge</a>
+        <a href="gallery.html" aria-current="page">갤러리</a>
+        <a href="about.html">소개</a>
+        <a href="contact.html">연락</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-button theme-toggle" type="button" aria-label="다크 모드" aria-pressed="false" hidden><span class="theme-icon" aria-hidden="true"></span></button>
+        <button id="menuToggle" class="icon-button menu-toggle" type="button" aria-label="메뉴" aria-controls="siteNav" aria-expanded="false" hidden><span class="menu-icon" aria-hidden="true"></span></button>
+      </div>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="wrap page-intro gallery-shell">
+        <div>
+          <p class="eyebrow">
+            <span class="accent-line"></span> Artwork archive</p>
+          <h1>AI 작품 갤러리</h1>
+          <p class="lead">ANIMA로 만든 이미지를 전시합니다. 앨범을 둘러보거나 모델·시드·프롬프트를 한국어와 영어로 검색할 수 있습니다.</p>
+        </div>
+        <div class="gallery-owner-row">
+          <button id="adminLogin" class="btn secondary" type="button" aria-haspopup="dialog">작가 로그인</button>
+          <button id="adminLogout" class="btn secondary" type="button" hidden>관리 종료</button>
+          <span id="adminStatus" class="gallery-admin-status" hidden>작가 관리 모드</span>
+        </div>
+      </section>
+    <div class="gallery-sticky">
+        <div class="wrap">
+          <div class="gallery-toolbar">
+            <label class="search-box">
+              <span class="sr-only">작품 검색</span>
+              <span aria-hidden="true">⌕</span>
+              <input type="search" id="gallerySearch" placeholder="제목, 모델, 시드 또는 프롬프트 검색" autocomplete="off">
+            </label>
+            <select class="select" id="modelFilter" aria-label="모델별 필터">
+              <option value="all">모든 모델</option>
+            </select>
+            <select class="select" id="sortFilter" aria-label="정렬">
+              <option value="newest">최근 등록순</option>
+              <option value="oldest">오래된순</option>
+              <option value="title">이름순</option>
+            </select>
+            <button class="btn primary small owner-only" id="openUpload" type="button" aria-haspopup="dialog" hidden>작품 게시하기</button>
+          </div>
+          <div class="gallery-filters">
+            <div id="albumBar" class="album-list" role="group" aria-label="앨범별 보기"></div>
+            <div class="gallery-tools">
+              <button class="text-link" id="allArtworks" type="button">필터 초기화</button>
+              <button class="chip owner-only" id="manageAlbums" type="button" aria-haspopup="dialog" hidden>앨범 관리</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="wrap">
+        <div class="gallery-banner">
+          <span class="badge" id="galleryCount" role="status">작품 불러오는 중…</span>
+        </div>
+        <div id="galleryGrid" class="gallery-grid" aria-busy="true"></div>
+        <div id="galleryEmpty" class="empty-state" hidden>
+          <h2 id="emptyTitle">아직 등록된 작품이 없어요.</h2>
+          <p id="emptyMessage">작가가 첫 작품을 게시하면 이곳에 나타납니다.</p>
+          <button id="resetGalleryFilters" class="btn secondary">전체 작품 보기</button>
+        </div>
+        <div class="gallery-load-wrap">
+          <button class="btn secondary" id="loadMore" hidden>더 많은 작품 보기</button>
+        </div>
+      </div>
+  </main>
+    <dialog id="adminModal" class="modal" aria-label="작가 로그인">
+        <div class="dialog">
+          <div class="dialog-top">
+            <div>
+              <h2>작가 관리 로그인</h2>
+            </div>
+            <button class="icon-button" data-close-admin aria-label="닫기">✕</button>
+          </div>
+          <p>URZ Studio 운영자만 작품을 게시·편집·삭제할 수 있습니다. Cloudflare에 설정한 관리 암호를 입력하세요.</p>
+          <form id="adminForm">
+            <div class="form-field">
+              <label for="adminPassword">관리 암호</label>
+              <input type="password" id="adminPassword" autocomplete="current-password" required autofocus minlength="24">
+            </div>
+            <button type="submit" class="btn primary">작가 모드 시작</button>
+          </form>
+          <p class="gallery-note" id="adminMessage" role="status">암호는 현재 브라우저 탭의 세션에만 보관합니다.</p>
+        </div>
+      </dialog>
+    <dialog id="uploadModal" class="modal" aria-label="작품 게시">
+        <div class="dialog">
+          <div class="dialog-top">
+            <div>
+              <h2>새 작품 게시하기</h2>
+            </div>
+            <button class="icon-button" data-close-upload aria-label="닫기">✕</button>
+          </div>
+          <p>PNG / JPEG / WebP / AVIF / GIF 파일을 여러 장 선택하면 메타데이터를 자동으로 읽어 <b>공개 서버에 게시</b>해요. 한 장당 최대 25MB.</p>
+          <div class="upload-drop" id="uploadDrop">
+            <h3>작품 파일을 여기에 놓기</h3>
+            <p>원본 이미지가 Cloudflare R2에 저장됩니다</p>
+            <input id="uploadInput" type="file" hidden accept="image/png,image/jpeg,image/webp,image/avif,image/gif" multiple>
+            <button class="btn primary" id="browseFiles" type="button">파일 여러 장 선택</button>
+          </div>
+          <div class="form-field">
+            <label for="uploadAlbum">선택한 앨범에 등록</label>
+            <select id="uploadAlbum" class="select">
+              <option value="">앨범 지정 안 함</option>
+            </select>
+          </div>
+          <p class="gallery-note" id="uploadProgress" role="status">게시가 완료되면 도메인을 방문하는 다른 사람에게도 즉시 보여요.</p>
+        </div>
+      </dialog>
+    <dialog id="galleryLightbox" class="modal" aria-labelledby="lightboxTitle">
+        <div class="dialog gallery-lightbox">
+          <div class="lightbox-media" id="lightboxMedia"></div>
+          <div class="lightbox-info">
+            <div class="dialog-top">
+              <button class="icon-button" id="closeLightbox" autofocus aria-label="닫기">✕</button>
+            </div>
+            <h2 id="lightboxTitle">작품 제목</h2>
+            <details class="lightbox-details">
+              <summary>생성 정보</summary>
+              <div id="lightboxDetails"></div>
+            </details>
+            <div class="form-field owner-only" id="editTitleWrap" hidden>
+              <label for="lightboxEditTitle">작품 제목</label>
+              <input id="lightboxEditTitle" maxlength="160">
+            </div>
+            <div class="form-field owner-only" id="editTagsWrap" hidden>
+              <label for="lightboxTags">검색 태그 · 쉼표 구분</label>
+              <input id="lightboxTags" placeholder="곰돌이, 캐릭터, 일러스트">
+            </div>
+            <div class="form-field owner-only" id="editAlbumWrap" hidden>
+              <label for="lightboxAlbums">앨범 · 복수 선택 가능</label>
+              <select id="lightboxAlbums" multiple size="4"></select>
+            </div>
+            <div class="button-row">
+              <button id="shareArtwork" class="btn secondary small">작품 주소 복사</button>
+              <button id="saveArtwork" class="btn primary small owner-only" hidden>수정 저장</button>
+              <button id="deleteArtwork" class="btn secondary small owner-only" hidden>삭제</button>
+            </div>
+            <p class="gallery-note">공개 작품 정보는 생성 메타데이터에서 추출한 내용입니다.</p>
+          </div>
+        </div>
+      </dialog>
+    <dialog id="albumModal" class="modal" aria-label="앨범 관리">
+        <div class="dialog">
+          <div class="dialog-top">
+            <div>
+              <h2>공개 앨범 관리</h2>
+            </div>
+            <button class="icon-button" data-close-album aria-label="닫기">✕</button>
+          </div>
+          <p>작품을 테마별로 정리하세요. 하나의 이미지를 여러 앨범에 넣을 수 있어요.</p>
+          <div class="form-field">
+            <label for="albumName">새 앨범 이름</label>
+            <input id="albumName" maxlength="70" placeholder="예: 곰돌이 · 판타지 · 인물">
+          </div>
+          <button id="createAlbum" class="btn primary small">앨범 만들기</button>
+          <div id="albumManagerList"></div>
+        </div>
+      </dialog>
+  <footer class="site-footer">
+    <div class="wrap">
+        <p class="gallery-note">전시 작품과 이미지의 저작권 및 이용 조건은 URZ Studio에 귀속됩니다. 일부 작품에는 AI 이미지 생성 정보를 표시할 수 있습니다.</p>
+      <div class="footer-main">
+        <div><a class="footer-brand" href="index.html">URZ<span class="brand-accent">.</span> STUDIO</a><p>웹디자인 · 창작 도구</p></div>
+        <nav class="footer-nav" aria-label="하단 메뉴">
+        <a href="index.html">홈</a>
+        <a href="projects.html">프로젝트</a>
+        <a href="anima-bridge.html">ANIMA Bridge</a>
+        <a href="gallery.html">갤러리</a>
+        <a href="about.html">소개</a>
+        <a href="contact.html">연락</a>
+        </nav>
+      </div>
+      <div class="footer-end">
+        <small>© <span class="year">2026</span> URZ Studio</small>
+        <a href="https://github.com/URZ-Studio">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
