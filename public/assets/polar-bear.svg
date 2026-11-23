@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="520" viewBox="0 0 460 520" role="img" aria-labelledby="title desc">
+<title id="title">북극곰 마스코트</title><desc id="desc">연하늘색 목도리를 두르고 미소 짓는 포근한 하얀 북극곰</desc>
+<defs>
+ <linearGradient id="snow" x1=".12" y1="0" x2=".86" y2="1"><stop stop-color="#fff"/><stop offset=".58" stop-color="#f6fcff"/><stop offset="1" stop-color="#d8ebf6"/></linearGradient>
+ <linearGradient id="shadow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dceef7"/><stop offset="1" stop-color="#b9d5e6"/></linearGradient>
+ <linearGradient id="scarf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b8edff"/><stop offset="1" stop-color="#74c9f5"/></linearGradient>
+ <linearGradient id="pink" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd1e4"/><stop offset="1" stop-color="#f5a8c8"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#ffffff" stop-opacity=".72"/><stop offset="1" stop-color="#c9eefe" stop-opacity="0"/></radialGradient>
+ <filter id="softshadow" x="-45%" y="-35%" width="190%" height="190%"><feGaussianBlur stdDeviation="15"/></filter>
+ <filter id="inner"><feGaussianBlur stdDeviation="2.5"/></filter>
+</defs>
+<ellipse cx="236" cy="462" rx="130" ry="21" fill="#4b89b4" opacity=".15" filter="url(#softshadow)"/>
+<circle cx="240" cy="245" r="210" fill="url(#glow)"/>
+<g stroke="#eff9ff" stroke-width="3" fill="none" opacity=".82">
+ <path d="M60 200v30m-15-15h30M48 149v12m-6-6h12M399 193v26m-13-13h26M390 117v14m-7-7h14"/>
+</g>
+<g>
+ <ellipse cx="237" cy="374" rx="131" ry="121" fill="url(#snow)" stroke="#e0f0f9" stroke-width="5"/>
+ <ellipse cx="145" cy="412" rx="44" ry="38" transform="rotate(19 145 412)" fill="url(#snow)" stroke="#dbeef8" stroke-width="4"/>
+ <ellipse cx="326" cy="412" rx="44" ry="38" transform="rotate(-19 326 412)" fill="url(#snow)" stroke="#dbeef8" stroke-width="4"/>
+ <ellipse cx="147" cy="431" rx="55" ry="34" fill="url(#snow)" stroke="#d8eaf5" stroke-width="4"/>
+ <ellipse cx="324" cy="431" rx="55" ry="34" fill="url(#snow)" stroke="#d8eaf5" stroke-width="4"/>
+ <ellipse cx="196" cy="422" rx="34" ry="19" fill="#f3faff" opacity=".8"/>
+ <ellipse cx="279" cy="422" rx="34" ry="19" fill="#f3faff" opacity=".8"/>
+</g>
+<g>
+ <circle cx="139" cy="158" r="56" fill="url(#snow)" stroke="#d8eaf5" stroke-width="5"/>
+ <circle cx="337" cy="158" r="56" fill="url(#snow)" stroke="#d8eaf5" stroke-width="5"/>
+ <circle cx="139" cy="164" r="32" fill="url(#pink)" opacity=".8"/>
+ <circle cx="337" cy="164" r="32" fill="url(#pink)" opacity=".8"/>
+ <path d="M120 162c5-21 24-33 43-27" stroke="#fff" stroke-opacity=".6" stroke-width="7" fill="none" stroke-linecap="round"/>
+ <ellipse cx="238" cy="239" rx="157" ry="146" fill="url(#snow)" stroke="#dcecf7" stroke-width="6"/>
+ <path d="M112 214c11-53 42-91 82-105" fill="none" stroke="#fff" stroke-opacity=".78" stroke-width="13" stroke-linecap="round"/>
+ <path d="M309 152c33 21 52 51 60 85" fill="none" stroke="#d6e9f4" stroke-opacity=".6" stroke-width="11" stroke-linecap="round"/>
+ <ellipse cx="178" cy="240" rx="11" ry="15" fill="#253648"/>
+ <ellipse cx="299" cy="240" rx="11" ry="15" fill="#253648"/>
+ <circle cx="181" cy="235" r="3.8" fill="#fff"/>
+ <circle cx="302" cy="235" r="3.8" fill="#fff"/>
+ <ellipse cx="146" cy="270" rx="27" ry="15" fill="#f9b4d5" opacity=".58"/>
+ <ellipse cx="332" cy="270" rx="27" ry="15" fill="#f9b4d5" opacity=".58"/>
+ <ellipse cx="239" cy="295" rx="68" ry="51" fill="#fff" stroke="#e7f2fa" stroke-width="3"/>
+ <path d="M218 274q20-14 41 0q-2 20-21 19q-19 1-20-19Z" fill="#35465a"/>
+ <path d="M239 291v13m0 0q-14 17-28 0m28 0q14 17 28 0" stroke="#35465a" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+ <path d="M201 327q39 15 76 0" stroke="#dbeaf3" stroke-width="5" opacity=".65" fill="none" stroke-linecap="round"/>
+</g>
+<g>
+ <path d="M132 350c41 33 170 36 208-3q6 27-10 38q-84 35-184 0q-19-13-14-35Z" fill="url(#scarf)" stroke="#80caed" stroke-width="4"/>
+ <path d="M305 374l17 69q5 18 24 14l19-7l-26-97" fill="url(#scarf)" stroke="#80caed" stroke-width="4"/>
+ <path d="M319 404l27-8m-20 23l27-8m-21 24l27-8" stroke="#e5f9ff" stroke-width="4" opacity=".85"/>
+ <path d="M153 366q94 36 156 1" stroke="#fff" stroke-opacity=".5" stroke-width="6" fill="none" stroke-linecap="round"/>
+</g>
+<g opacity=".8"><circle cx="90" cy="320" r="6" fill="#beeaff"/><circle cx="384" cy="325" r="5" fill="#f5bad9"/><circle cx="354" cy="90" r="5" fill="#bae6ff"/></g>
+</svg>
