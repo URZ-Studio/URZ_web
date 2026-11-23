@@ -1,94 +1,68 @@
-# URZ STUDIO — Design Handoff (2026)
+# URZ STUDIO — Polar Aurora Design System
 
-This is a working design foundation for a job-oriented web designer portfolio. Its visual system is intentionally editable in Figma: large editorial typography, an IDE-inspired navigation, signature product mockups, and motion that reveals real project information.
+**Theme:** POLAR / AURORA / SNOW BEAR — a professional web designer portfolio with a soft Arctic aesthetic.
 
-## Art direction
+Direction: luminous snow-white canvas, subtle northern-light washes, sky blue 70% / blush pink 30% accents, a rounded polar bear mascot, modern flat panels with carefully controlled frosted-glass treatment. The work remains the hero; visual effects are supporting cast.
 
-**Concept:** DIGITAL PLAYGROUND × PROFESSIONAL PORTFOLIO
+## Editable Figma tokens
 
-- Clean paper-like backgrounds and deliberately oversized type
-- Signal-lime for primary interaction and molten-orange for expressive emphasis
-- A dark product-workbench atmosphere for ANIMA Bridge, separate from the other projects
-- Distinct conceptual product previews instead of six repeated placeholder screenshots
-- Avoid presenting generated UI concepts as actual app screenshots
-- Light theme by default; dark theme is supported
+The implementation is separated into `public/assets/showcase.css` (layout), `public/assets/polar.css` (theme), and `public/assets/showcase.js` (interaction). In Figma, create semantic variables for both **Light** and **Dark** modes; do not manually recolor every component.
 
-## Design tokens
+| Semantic variable | Light | Dark | Usage |
+| --- | --- | --- | --- |
+| Canvas | `#F6FBFF` | `#09131F` | Page background |
+| Surface / glass | `rgba(255,255,255,.74)` | `rgba(21,38,56,.72)` | Selected panels |
+| Text / primary | `#172333` | `#F2F9FF` | Headings and body |
+| Text / secondary | `#62768B` | `#B3C9D9` | Supporting copy |
+| Border / subtle | `#D7E8F3` | `#31475B` | Outlines |
+| Sky highlight | `#A6E7FF` | `#8BDEFF` | Primary interactive surface |
+| Pink highlight | `#F8BAD8` | `#FFB9DA` | Small playful detail |
+| Pink readable text | `#D46B9B` | `#FFC0DD` | Emphasis |
+| Sky readable text | `#3B94C6` | `#9CE6FF` | Label emphasis |
+| Arctic deep | `#0D192A` | `#07111E` | Dark hero / case study |
 
-All values are defined at the top of `public/assets/showcase.css`.
+Other primitives: 18 px button radius, 24–30 px card radius, 36 px featured panel radius, thin 1 px translucent outlines, ~18–28 px glass backdrop blur only where visual hierarchy benefits. Prefer actual flat color for long reading areas.
 
-| Token | Value | Use |
-|---|---|---|
-| Paper | `#f8f7f3` | Canvas |
-| Ink | `#171b19` | Typography |
-| Forest | `#174d3b` | Secondary accents |
-| Signal Lime | `#b9f44b` | Call to action, marquee |
-| Molten Orange | `#ff7141` | Expressive highlights |
-| Dark | `#111817` | Product and closing sections |
-| White | `#ffffff` | Cards |
-| Radius | `26px` | Large cards |
-| Content width | `1520px` max | Responsive layout |
-| Typography | `Inter / Pretendard` fallbacks | Latin/Korean |
+## Components and Figma variants
 
-## Components suitable for a Figma library
+- **PolarBrand**: bear-face app icon + URZ STUDIO wordmark; small and full-size variants.
+- **GlassHeader**: desktop navigation, current route, mobile dropdown, light/dark.
+- **PolarHero**: giant editorial display type, Aurora backdrop, ANIMA workspace preview, plush bear.
+- **FrostButton**: primary sky blue, subtle secondary glass, focus/hover/pressed.
+- **ArtworkCard**: distinct webapp/extension concepts. Swap with *real project screenshots* when available.
+- **ArcticStage**: dark glass application/workbench in the independent ANIMA Bridge case study.
+- **GalleryMasonry**: image cards, search, album chips, filters, lightbox, owner upload modal.
+- **AboutIdentity**: polar gradient panel + bear illustration, experience and design process.
+- **ContactTerminal**: dark arctic glass panel with real GitHub link (no fake form).
+- **AuroraFooter**: deep Arctic blue and subtle light wash.
 
-- `SiteHeader / IDE Tabs` (default, active, mobile expanded)
-- `Intro / Giant Editorial Headline`
-- `Window / Product Workspace`
-- `Card / Work Preview` (featured, regular, project-specific preview)
-- `Section / Dark Case Study`
-- `Marquee / Motion Divider`
-- `Gallery / Masonry`
-- `Gallery / Artwork Lightbox`
-- `Dialog / Project Details`
-- `Footer / Statement`
+### Visual assets
 
-## Motion vocabulary
+- `public/assets/favicon.svg` — original soft polar-bear head, also used in navigation.
+- `public/assets/polar-bear.svg` — original fluffy polar bear with pastel sky scarf.
+- `public/assets/polar.css` — all new Arctic visual rules.
 
-CSS animations and vanilla JavaScript are contained in `showcase.css` and `showcase.js`.
+## Animation rules
 
-1. Masked, staggered headline entrance
-2. Slow 3D floating product window
-3. Morphing procedural artwork inside the workspace concept
-4. Continuous creative-process marquee
-5. IntersectionObserver-based scroll reveal
-6. Hover-responsive project preview
-7. Scroll progress indicator
-8. Cursor-reactive ambient glow on pointer devices
-9. Interactive ANIMA workbench tabs
-10. Browser cross-document view transitions where supported
+The **Aurora** is one faint 20–24 second gradient drift, not a particle system. The bear gently floats about 10 px in a 7-second loop. Product window uses a 9-second float. Project cards rise up to 7 px on hover, and a restrained 70-second creative ticker bridges sections. Motion pauses for users with `prefers-reduced-motion`; content never relies on an animation to be readable. Keep contrast and focus rings visible in both themes.
 
-`prefers-reduced-motion` turns motion off. Keyboard focus remains visible. There is no CDN or animation dependency.
+## Pages (six distinct HTML files)
 
-## Six independent static pages
+- `public/index.html` — Arctic hero, showcased work, independent ANIMA feature.
+- `public/projects.html` — project gallery and filters.
+- `public/anima-bridge.html` — independent product case study.
+- `public/gallery.html` — public artwork gallery, metadata search and owner upload.
+- `public/about.html` — experience, education, design values.
+- `public/contact.html` — real public contact destinations only.
 
-- `public/index.html`
-- `public/projects.html`
-- `public/anima-bridge.html`
-- `public/gallery.html`
-- `public/about.html`
-- `public/contact.html`
+No external animation package or generated fake screenshots are required.
 
-The gallery is an actual project with separate Cloudflare Pages Functions and data storage. **Do not replace or remove** `functions/`, `lib/`, `public/assets/gallery.js`, or `public/_routes.json` when making design revisions.
+## Cloudflare continuity / do not break
 
-## Image and privacy policy
+Cloudflare Pages project: **urz-web**. Existing domain: **kodiakx.kro.kr**. Production branch: `main`, root directory empty, build command `exit 0`, output folder `public`.
 
-Illustrated product previews are editable HTML/CSS **concepts**, not screenshots. Replace them with authorized screenshots from actual applications when those are selected. Private extension source, API keys, personal pictures and private galleries are not bundled.
+The public gallery's Cloudflare Pages Functions, image storage and search must remain untouched while styling. **Do not delete** `functions/`, `lib/`, `public/_routes.json`, `public/assets/gallery.js`. Uploading art for visitors requires D1 binding `GALLERY_DB`, R2 binding `GALLERY_IMAGES`, and secret `ADMIN_UPLOAD_KEY` in Cloudflare. Those are cloud resources, not front-end styling variables. Actual uploads are not confirmed to work until the bindings are configured and tested.
 
-The gallery's public image upload requires Cloudflare production bindings `GALLERY_DB` (D1), `GALLERY_IMAGES` (R2) and secret `ADMIN_UPLOAD_KEY` to be configured. Visual redesign does not configure or bypass those services.
+## Design asset checklist
 
-## Deployment continuity
-
-Existing custom domain: `kodiakx.kro.kr`.
-
-Cloudflare Pages: Git branch `main`; build output directory `public`; build command `exit 0`; root directory empty. No new project or domain needed.
-
-## Next visual assets to replace in Figma
-
-- Authentic ANIMA Bridge screenshots and representative interface states
-- BEARSTORY editor screenshots
-- Professional web design work samples you own and are permitted to publish
-- Your chosen profile picture/portrait and public contact address, if desired
-- Cover artworks from the public gallery once R2/D1 storage is connected
-
-The current system is meant to give those assets a strong presentation, not pretend the assets already exist.
+For the next Figma pass, replace **UI concept graphics** with actual ANIMA Bridge and BEARSTORY screenshots and publish only selected AI artwork with appropriate metadata. Keep readable hierarchy and whitespace before adding effects.
