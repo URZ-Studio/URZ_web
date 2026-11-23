@@ -1,5 +1,5 @@
 (function(){
- const here=location.pathname.split('/').pop()||'index.html';
+ const segment=location.pathname.split('/').filter(Boolean).pop()||'index'; const here=segment.includes('.')?segment:(segment==='index'?'index.html':segment+'.html');
  document.querySelectorAll('.nav-links a').forEach(a=>{if(a.getAttribute('href')===here){a.classList.add('active');a.setAttribute('aria-current','page')}});
  let dark=false;try{dark=localStorage.getItem('urz-theme')==='dark'}catch{} if(dark)document.body.classList.add('dark');
  const themeBtn=document.getElementById('themeBtn');if(themeBtn)themeBtn.addEventListener('click',()=>{document.body.classList.toggle('dark');try{localStorage.setItem('urz-theme',document.body.classList.contains('dark')?'dark':'light')}catch{}themeBtn.textContent=document.body.classList.contains('dark')?'☀':'☾'});if(themeBtn)themeBtn.textContent=dark?'☀':'☾';
