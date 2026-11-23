@@ -1,40 +1,40 @@
 # URZ STUDIO — Polar Aurora Design System
 
-**Theme:** POLAR / AURORA / SNOW BEAR — a professional web designer portfolio with a soft Arctic aesthetic.
+**Theme:** POLAR FLAT / SNOW BEAR — a legible, considered, job-oriented web designer portfolio.
 
-Direction: luminous snow-white canvas, subtle northern-light washes, sky blue 70% / blush pink 30% accents, a rounded polar bear mascot, modern flat panels with carefully controlled frosted-glass treatment. The work remains the hero; visual effects are supporting cast.
+Direction: snow-white and navy surfaces with restrained sky-blue accents, sparing pale-pink details, and a small original polar-bear mascot. Use solid cards, thin borders, clear editorial typography, consistent spacing, and content-first presentation. No artificial luminous cards or constant motion.
 
 ## Editable Figma tokens
 
-The implementation is separated into `public/assets/showcase.css` (layout), `public/assets/polar.css` (theme), and `public/assets/showcase.js` (interaction). In Figma, create semantic variables for both **Light** and **Dark** modes; do not manually recolor every component.
+The implementation is separated into `public/assets/showcase.css` (base layout), `public/assets/polar.css` (Arctic theme and final flat-visibility overrides), and `public/assets/showcase.js` (interaction). In Figma, create semantic variables for both **Light** and **Dark** modes; do not manually recolor every component.
 
 | Semantic variable | Light | Dark | Usage |
 | --- | --- | --- | --- |
-| Canvas | `#F6FBFF` | `#09131F` | Page background |
-| Surface / glass | `rgba(255,255,255,.74)` | `rgba(21,38,56,.72)` | Selected panels |
-| Text / primary | `#172333` | `#F2F9FF` | Headings and body |
-| Text / secondary | `#62768B` | `#B3C9D9` | Supporting copy |
-| Border / subtle | `#D7E8F3` | `#31475B` | Outlines |
+| Canvas | `#F7FAFC` | `#0F1924` | Page background |
+| Surface / card | `#FFFFFF` | `#192A3B` | Flat cards |
+| Text / primary | `#172637` | `#F3F8FD` | Headings and body |
+| Text / secondary | `#536678` | `#B6C9D8` | Supporting copy |
+| Border / subtle | `#DBE5EC` | `#364A5E` | Outlines |
 | Sky highlight | `#A6E7FF` | `#8BDEFF` | Primary interactive surface |
 | Pink highlight | `#F8BAD8` | `#FFB9DA` | Small playful detail |
 | Pink readable text | `#D46B9B` | `#FFC0DD` | Emphasis |
-| Sky readable text | `#3B94C6` | `#9CE6FF` | Label emphasis |
+| Sky readable text | `#2B719B` | `#A3E2FF` | Label emphasis |
 | Arctic deep | `#0D192A` | `#07111E` | Dark hero / case study |
 
-Other primitives: 18 px button radius, 24–30 px card radius, 36 px featured panel radius, thin 1 px translucent outlines, ~18–28 px glass backdrop blur only where visual hierarchy benefits. Prefer actual flat color for long reading areas.
+Primitives: 12 px button radius, 14–20 px card radius, thin 1 px solid borders, no routine shadows or backdrop blur. The only strong contrast panels are the ANIMA workspace and a dark footer. Use meaningful white space and 16px+ body type.
 
 ## Components and Figma variants
 
 - **PolarBrand**: bear-face app icon + URZ STUDIO wordmark; small and full-size variants.
-- **GlassHeader**: desktop navigation, current route, mobile dropdown, light/dark.
-- **PolarHero**: giant editorial display type, Aurora backdrop, ANIMA workspace preview, plush bear.
-- **FrostButton**: primary sky blue, subtle secondary glass, focus/hover/pressed.
+- **FlatHeader**: opaque navigation, current route, mobile dropdown, light/dark.
+- **PolarHero**: legible Korean editorial headline, ANIMA workspace preview, small illustrated bear.
+- **FlatButton**: solid sky-blue primary, outlined secondary, visible focus/hover/pressed.
 - **ArtworkCard**: distinct webapp/extension concepts. Swap with *real project screenshots* when available.
 - **ArcticStage**: dark glass application/workbench in the independent ANIMA Bridge case study.
 - **GalleryMasonry**: image cards, search, album chips, filters, lightbox, owner upload modal.
-- **AboutIdentity**: polar gradient panel + bear illustration, experience and design process.
-- **ContactTerminal**: dark arctic glass panel with real GitHub link (no fake form).
-- **AuroraFooter**: deep Arctic blue and subtle light wash.
+- **AboutIdentity**: flat pale-blue panel + bear illustration, experience and design process.
+- **ContactTerminal**: flat dark-blue panel with real GitHub link (no fake form).
+- **ArcticFooter**: deep Arctic blue, no distracting motion.
 
 ### Visual assets
 
@@ -44,7 +44,7 @@ Other primitives: 18 px button radius, 24–30 px card radius, 36 px featured pa
 
 ## Animation rules
 
-The **Aurora** is one faint 20–24 second gradient drift, not a particle system. The bear gently floats about 10 px in a 7-second loop. Product window uses a 9-second float. Project cards rise up to 7 px on hover, and a restrained 70-second creative ticker bridges sections. Motion pauses for users with `prefers-reduced-motion`; content never relies on an animation to be readable. Keep contrast and focus rings visible in both themes.
+Aurora remains a color inspiration, not an animated background. Bear, 3D product preview and ticker are stationary; cards lift at most 3px on hover. Entry motion is short and optional. Respect `prefers-reduced-motion`. Typography, click targets, and contrast remain legible even with motion disabled.
 
 ## Pages (six distinct HTML files)
 
