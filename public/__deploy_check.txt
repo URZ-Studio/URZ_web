@@ -1,0 +1,2 @@
+URZ_STUDIO_DEPLOY_CHECK_2026-11-23
+This file must be served at /__deploy_check.txt from the Cloudflare Pages public output directory.
